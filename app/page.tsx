@@ -1,95 +1,46 @@
-import Image from 'next/image'
 import styles from './page.module.css'
 
-export default function Home() {
+const fetchNotionDb = async () => {
+  const res = await fetch('http://localhost:3000/api/getData')
+  const data = await res.json()
+  return (data);
+}
+
+export default async function Home() {
+
+  const data: rowsStructured = await fetchNotionDb()
+  console.log(data)
+
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+      <h1>Notion DB</h1>
+      <br />
+      <p>Data displayed below is fetched form <a target='_blank' href="https://imminent-crepe-93a.notion.site/dc39c4a089044d59a6e49be738aca6c6?v=ee84a38e2b024085b90bb5c68b2511f6">here</a> using Notion as database</p>
+      <p>API is hosted at <a target='_blank' href="/api/getData">/api/getData</a></p>
+      <br />
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Creator Name</th>
+            <th>Link</th>
+          </tr>
+        </thead>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+        <tbody>
+          {data.map((row, index) => (
+            <tr key={index}>
+              <td>{row.username}</td>
+              <td>{row.creator_name}</td>
+              {/* <td>{row.link}</td> */}
+              <td><a target='_blank' href={`https://${row.link}`}>{row.link}</a></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <br />
+      <br />
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
     </main>
   )
 }
