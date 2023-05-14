@@ -1,3 +1,5 @@
+'use client'
+
 import styles from './page.module.css'
 
 const fetchNotionDb = async () => {
@@ -6,6 +8,7 @@ const fetchNotionDb = async () => {
       const data = await res.json();
       return data;
     } else {
+      console.log('Error fetching data', res);
       return null;
     }
 }
