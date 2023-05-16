@@ -1,5 +1,6 @@
 'use client'
 
+import Head from 'next/head';
 import styles from './page.module.css'
 
 const fetchNotionDb = async () => {
@@ -19,11 +20,15 @@ export default async function Home() {
   const data: rowsStructured = await fetchNotionDb()
   console.log(data)
 
+
   return (
     <main className={styles.main}>
-      {/* if data is equal to null then display "failed to fetch data else display table " */}
-      {data === null ? <h1>Failed to fetch data</h1> :
+      <title>Notion DB</title>
+      <Head>
+        <meta name="description" content="Notion DB" />
+      </Head>
 
+      {data === null ? <h1>Failed to fetch data</h1> :
         <div>
           <h1>Notion DB</h1>
           <br />
